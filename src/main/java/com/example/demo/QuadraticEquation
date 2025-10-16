@@ -1,0 +1,35 @@
+public class QuadraticEquation {
+    private static final double EPSILON = 1e-10;
+    
+    public double[] solve(double a, double b, double c) {
+        // Проверка на специальные значения double
+        if (Double.isNaN(a) || Double.isNaN(b) || Double.isNaN(c) ||
+            Double.isInfinite(a) || Double.isInfinite(b) || Double.isInfinite(c)) {
+            throw new IllegalArgumentException("Coefficients cannot be NaN or Infinity");
+        }
+        
+        if (Math.abs(a) <= EPSILON) {
+            throw new IllegalArgumentException("Coefficient 'a' cannot be zero");
+        }
+        
+        double discriminant = b * b - 4 * a * c;
+        
+        // Обработка очень малых отрицательных значений из-за погрешности вычислений
+        if (discriminant < -EPSILON) {
+            return new double[0];
+        }
+        
+        // Если дискриминант близок к нулю (в пределах EPSILON)
+        if (Math.abs(discriminant) <= EPSILON) {
+            double x = -b / (2 * a);
+            return new double[]{x};
+        }
+        
+        // Положительный дискриминант
+        double sqrtD = Math.sqrt(discriminant);
+        double x1 = (-b + sqrtD) / (2 * a);
+        double x2 = (-b - sqrtD) / (2 * a);
+        
+        return new double[]{x1, x2};
+    }
+}
